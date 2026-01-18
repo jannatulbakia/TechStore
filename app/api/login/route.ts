@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // POST /api/login - User authentication
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +20,7 @@ export async function POST(request: NextRequest) {
       // Set cookie
       response.cookies.set('authToken', 'authenticated', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production' || process.env.VERCEL === '1',
         sameSite: 'lax',
         maxAge: 86400, // 24 hours in seconds
         path: '/'

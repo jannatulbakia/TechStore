@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getItems, addItem } from '@/lib/data';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // GET /api/items - Get all items
 export async function GET() {
   try {
     const items = getItems();
-    return NextResponse.json(items);
+    return NextResponse.json(items, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, max-age=0',
+      },
+    });
   } catch (error) {
+    console.error('Error fetching items:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch items' },
+      { error: 'Failed to fetch items', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

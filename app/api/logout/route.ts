@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // POST /api/logout - User logout
 export async function POST() {
   const response = NextResponse.json({

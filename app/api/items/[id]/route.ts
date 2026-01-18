@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getItemById } from '@/lib/data';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // GET /api/items/[id] - Get single item by ID
 export async function GET(
   request: NextRequest,

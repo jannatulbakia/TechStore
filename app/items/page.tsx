@@ -29,10 +29,15 @@ export default function ItemsPage() {
   const fetchItems = async () => {
     try {
       const response = await api.fetch(api.endpoints.items);
-      if (!response.ok) throw new Error('Failed to fetch items');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error:', response.status, errorText);
+        throw new Error(`Failed to fetch items: ${response.status} ${response.statusText}`);
+      }
       const data = await response.json();
       setItems(data);
     } catch (err) {
+      console.error('Fetch error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
