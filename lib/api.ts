@@ -1,15 +1,13 @@
-// API utility functions with environment-aware base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+// API utility functions - uses same origin (works with Next.js API routes)
+// No need for external URL since API routes are in the same Next.js app
 
 export const api = {
-  baseUrl: API_BASE_URL,
-  
-  // Helper function to build full API URL
-  url: (endpoint: string) => `${API_BASE_URL}${endpoint}`,
+  // Helper function to build full API URL (relative to same origin)
+  url: (endpoint: string) => endpoint,
   
   // Helper function for fetch requests with credentials
   fetch: async (endpoint: string, options: RequestInit = {}) => {
-    return fetch(api.url(endpoint), {
+    return fetch(endpoint, {
       ...options,
       credentials: 'include',
       headers: {
@@ -19,7 +17,7 @@ export const api = {
     });
   },
   
-  // API endpoints
+  // API endpoints (relative paths work with Next.js API routes)
   endpoints: {
     items: '/api/items',
     item: (id: number) => `/api/items/${id}`,
