@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { api } from '@/lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,9 +19,7 @@ export default function LoginPage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/auth/status', {
-        credentials: 'include'
-      });
+      const response = await api.fetch(api.endpoints.authStatus);
       const data = await response.json();
       if (data.authenticated) {
         router.push('/items');
@@ -36,12 +35,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/login', {
+      const response = await api.fetch(api.endpoints.login, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { api } from '@/lib/api';
 
 interface Item {
   id: number;
@@ -19,7 +20,7 @@ export default function PopularProducts() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/items')
+    api.fetch(api.endpoints.items)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch');
         return res.json();

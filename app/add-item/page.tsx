@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { api } from '@/lib/api';
 
 export default function AddItemPage() {
   const router = useRouter();
@@ -25,9 +26,7 @@ export default function AddItemPage() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/auth/status', {
-        credentials: 'include'
-      });
+      const response = await api.fetch(api.endpoints.authStatus);
       const data = await response.json();
       if (data.authenticated) {
         setAuthenticated(true);
@@ -54,12 +53,8 @@ export default function AddItemPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/items', {
+      const response = await api.fetch(api.endpoints.items, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price)

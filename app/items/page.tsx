@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
+import { api } from '@/lib/api';
 
 interface Item {
   id: number;
@@ -27,7 +28,7 @@ export default function ItemsPage() {
 
   const fetchItems = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/items');
+      const response = await api.fetch(api.endpoints.items);
       if (!response.ok) throw new Error('Failed to fetch items');
       const data = await response.json();
       setItems(data);

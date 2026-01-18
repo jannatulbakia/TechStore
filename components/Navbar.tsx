@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 export default function Navbar() {
   const router = useRouter();
@@ -14,9 +15,7 @@ export default function Navbar() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/auth/status', {
-        credentials: 'include'
-      });
+      const response = await api.fetch(api.endpoints.authStatus);
       const data = await response.json();
       setAuthenticated(data.authenticated);
     } catch (err) {
@@ -26,9 +25,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:3001/api/logout', {
+      await api.fetch(api.endpoints.logout, {
         method: 'POST',
-        credentials: 'include'
       });
       setAuthenticated(false);
       router.push('/');
